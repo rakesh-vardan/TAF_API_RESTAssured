@@ -9,24 +9,34 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
+import static io.restassured.RestAssured.oauth2;
 
 @SpringBootConfiguration
+@EnableAspectJAutoProxy
 @ComponentScan(basePackages = "io.learning")
 public class TestConfig {
 
-    @Value("${api.baseUri}")
-    private String baseUri;
+    @Value("${users.api.baseUri}")
+    private String usersApiBaseUri;
 
-    @Value("${api.username}")
-    private String username;
+    @Value("${ipify.api.baseUri}")
+    private String ipifyApiBaseUri;
 
-    @Value("${api.password}")
-    private String password;
+    @Value("${github.api.baseUri}")
+    private String gitHubApiBaseUri;
+
+    @Value("${github.api.token}")
+    private String githubApiToken;
+
+    @Value("${postman-echo.api.baseUri}")
+    private String postmanEchoApiBaseUri;
 
     @Bean
-    public RequestSpecification requestSpecification() {
+    public RequestSpecification usersRequestSpecification() {
         return new RequestSpecBuilder()
-                .setBaseUri(baseUri)
+                .setBaseUri(usersApiBaseUri)
                 .addFilter(new AllureRestAssured())
                 .build();
     }
@@ -35,7 +45,42 @@ public class TestConfig {
     public ResponseSpecification responseSpecification() {
         return new ResponseSpecBuilder()
                 .expectStatusCode(200)
-                .expectHeader("Content-Type", "application/json; charset=utf-8")
+                .expectHeader("Content-Type",
+                        "application/json; charset=utf-8")
+                .build();
+    }
+
+    @Bean
+    public RequestSpecification ipifyRequestSpecification() {
+        return new RequestSpecBuilder()
+                .setBaseUri(ipifyApiBaseUri)
+                .addFilter(new AllureRestAssured())
+                .build();
+    }
+
+    @Bean
+    public RequestSpecification gitHubRequestSpecification() {
+        return new RequestSpecBuilder()
+                .setBaseUri(gitHubApiBaseUri)
+                .setAuth(oauth2(githubApiToken))
+                .addFilter(new AllureRestAssured())
+                .build();
+    }
+
+    @Bean
+    public RequestSpecification postmanEchoRequestSpecWithoutAuth() {
+        return new RequestSpecBuilder()
+                .setBaseUri(postmanEchoApiBaseUri)
+                .addFilter(new AllureRestAssured())
+                .build();
+    }
+
+    @Bean
+    public RequestSpecification postmanEchoRequestSpecWithAuth() {
+        return new RequestSpecBuilder()
+                .setBaseUri(postmanEchoApiBaseUri)
+                .addHeader("Authorization", "Basic cG9zdG1hbjpwYXNzd29yZA==")
+                .addFilter(new AllureRestAssured())
                 .build();
     }
 }

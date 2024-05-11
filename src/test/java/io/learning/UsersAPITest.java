@@ -1,6 +1,6 @@
 package io.learning;
 
-import io.learning.client.ApiClient;
+import io.learning.client.UsersAPIClient;
 import io.restassured.response.Response;
 import io.restassured.specification.ResponseSpecification;
 import org.junit.jupiter.api.Test;
@@ -11,17 +11,17 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserApiTest extends BaseTest {
+public class UsersAPITest extends BaseTest {
 
     @Autowired
-    private ApiClient apiClient;
+    private UsersAPIClient usersAPIClient;
 
     @Autowired
     private ResponseSpecification responseSpecification;
 
     @Test
     void testGetUser() {
-        Response response = apiClient.getUser(1);
+        Response response = usersAPIClient.getUser(1);
         response.then().spec(responseSpecification);
     }
 
@@ -31,7 +31,7 @@ public class UserApiTest extends BaseTest {
         user.put("name", "John Doe");
         user.put("email", "john.doe@example.com");
 
-        Response response = apiClient.createUser(user);
+        Response response = usersAPIClient.createUser(user);
         assertEquals(201, response.statusCode());
     }
 
@@ -41,13 +41,13 @@ public class UserApiTest extends BaseTest {
         user.put("name", "Jane Doe");
         user.put("email", "jane.doe@example.com");
 
-        Response response = apiClient.updateUser(1, user);
+        Response response = usersAPIClient.updateUser(1, user);
         response.then().spec(responseSpecification);
     }
 
     @Test
     void testDeleteUser() {
-        Response response = apiClient.deleteUser(1);
+        Response response = usersAPIClient.deleteUser(1);
         response.then().spec(responseSpecification);
     }
 }
