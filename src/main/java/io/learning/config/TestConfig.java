@@ -33,6 +33,12 @@ public class TestConfig {
     @Value("${postman-echo.api.baseUri}")
     private String postmanEchoApiBaseUri;
 
+    @Value("${football.api.baseUri}")
+    private String footballApiBaseUri;
+
+    @Value("${football.api.token}")
+    private String footballApiToken;
+
     @Bean
     public RequestSpecification usersRequestSpecification() {
         return new RequestSpecBuilder()
@@ -80,6 +86,16 @@ public class TestConfig {
         return new RequestSpecBuilder()
                 .setBaseUri(postmanEchoApiBaseUri)
                 .addHeader("Authorization", "Basic cG9zdG1hbjpwYXNzd29yZA==")
+                .addFilter(new AllureRestAssured())
+                .build();
+    }
+
+    @Bean
+    public RequestSpecification footballRequestSpecification() {
+        return new RequestSpecBuilder()
+                .setBaseUri(footballApiBaseUri)
+                .setBasePath("/v4")
+                .addHeader("X-Auth-Token", footballApiToken)
                 .addFilter(new AllureRestAssured())
                 .build();
     }

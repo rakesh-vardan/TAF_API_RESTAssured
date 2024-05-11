@@ -4,6 +4,7 @@ import io.learning.client.PostmanAPIClient;
 import io.restassured.http.Cookie;
 import io.restassured.http.Cookies;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,6 +23,7 @@ public class PostmanAPITest extends BaseTest {
     }
 
     @Test
+    @Tag("smoke")
     void testWithWithBasicAuth() {
         Response response = postmanAPIClient.getDataWithBasicAuth();
         assertEquals(200, response.statusCode());

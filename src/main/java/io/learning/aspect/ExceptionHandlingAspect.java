@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ExceptionHandlingAspect {
 
-    @AfterThrowing(pointcut = "execution(* io.learning.client.*.*(..))", throwing = "ex")
+    @AfterThrowing(pointcut = "execution(* io.learning.*.*.*(..))", throwing = "ex")
     public void handleException(JoinPoint joinPoint, Exception ex) {
         log.error("Exception in method: {}", joinPoint.getSignature().getName(), ex);
     }

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UsersAPITest extends BaseTest {
@@ -49,5 +51,12 @@ public class UsersAPITest extends BaseTest {
     void testDeleteUser() {
         Response response = usersAPIClient.deleteUser(1);
         response.then().spec(responseSpecification);
+    }
+
+    @Test
+    void testUserSchema() {
+        Response response = usersAPIClient.getUser(1);
+        assertThat(response.getBody().asString(),
+                matchesJsonSchemaInClasspath("user-schema.json"));
     }
 }

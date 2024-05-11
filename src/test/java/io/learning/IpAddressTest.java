@@ -2,6 +2,8 @@ package io.learning;
 
 import io.learning.client.IPIFyAPIClient;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,6 +15,7 @@ public class IpAddressTest extends BaseTest {
     private IPIFyAPIClient ipifyApiClient;
 
     @Test
+    @Tag("smoke")
     void testGetIpAddress() {
         Response response = ipifyApiClient.getIpAddress();
         assertNotNull(response.jsonPath().getString("ip"));
