@@ -38,7 +38,9 @@ jobs:
           FOOTBALL_API_TOKEN: ${{ secrets.FOOTBALL_API_TOKEN }}
 
       - name: Copy Allure Report
-        run: docker cp tests-service:/usr/app/target/allure-results allure-results
+        run: |
+          docker cp $(docker-compose ps -q tests-service):/usr/app/target/allure-results allure-results
+          docker-compose down
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.5
