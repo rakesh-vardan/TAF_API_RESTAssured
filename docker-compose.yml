@@ -6,8 +6,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8090:8090"
-    env_file:
-      - .env
 
   wait:
     image: alpine
