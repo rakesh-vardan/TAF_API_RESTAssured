@@ -5,4 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "8090:8090"
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - FOOTBALL_API_TOKEN=${FOOTBALL_API_TOKEN}

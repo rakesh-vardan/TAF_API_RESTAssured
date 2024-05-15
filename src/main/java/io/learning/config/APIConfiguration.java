@@ -16,7 +16,7 @@ import static io.restassured.RestAssured.oauth2;
 @SpringBootConfiguration
 @EnableAspectJAutoProxy
 @ComponentScan(basePackages = "io.learning")
-public class TestConfig {
+public class APIConfiguration {
 
     @Value("${users.api.baseUri}")
     private String usersApiBaseUri;
@@ -48,7 +48,7 @@ public class TestConfig {
     }
 
     @Bean
-    public ResponseSpecification responseSpecification() {
+    public ResponseSpecification usersResponseSpecification() {
         return new ResponseSpecBuilder()
                 .expectStatusCode(200)
                 .expectHeader("Content-Type",
