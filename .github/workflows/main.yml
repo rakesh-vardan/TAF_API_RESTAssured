@@ -30,13 +30,11 @@ jobs:
           chmod +x docker-compose
           sudo mv docker-compose /usr/local/bin
 
-      - name: Set up environment variables
-        run: |
-          echo MY_G_TOKEN=${{ secrets.MY_G_TOKEN }} > .env
-          echo FOOTBALL_API_TOKEN=${{ secrets.FOOTBALL_API_TOKEN }} >> .env
-
       - name: Run Docker Compose
-        run: docker-compose up -d wait
+        run: |
+          export MY_G_TOKEN=${{ secrets.MY_G_TOKEN }}
+          export FOOTBALL_API_TOKEN=${{ secrets.FOOTBALL_API_TOKEN }}
+          docker-compose up -d wait
         continue-on-error: true
 
       - name: Copy Allure Report
