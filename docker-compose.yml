@@ -7,5 +7,5 @@ services:
     ports:
       - "8090:8090"
     environment:
-      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - MY_G_TOKEN=${MY_G_TOKEN}
       - FOOTBALL_API_TOKEN=${FOOTBALL_API_TOKEN}
