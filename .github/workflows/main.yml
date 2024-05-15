@@ -31,7 +31,7 @@ jobs:
           sudo mv docker-compose /usr/local/bin
 
       - name: Run Docker Compose
-        run: docker-compose up -d
+        run: docker-compose up -d wait
         continue-on-error: true
         env:
           MY_G_TOKEN: ${{ secrets.MY_G_TOKEN }}
