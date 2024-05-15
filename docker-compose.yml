@@ -6,9 +6,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8090:8090"
-    environment:
-      - MY_G_TOKEN=${MY_G_TOKEN}
-      - FOOTBALL_API_TOKEN=${FOOTBALL_API_TOKEN}
+    env_file:
+      - .env
 
   wait:
     image: alpine
