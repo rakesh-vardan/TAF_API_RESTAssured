@@ -9,30 +9,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-    - name: Cache Docker layers
-      uses: actions/cache@v2
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
 
-    - name: Set up Docker Compose
-      run: |
-        sudo rm /usr/local/bin/docker-compose
-        curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` > docker-compose
-        chmod +x docker-compose
-        sudo mv docker-compose /usr/local/bin
+      - name: Set up Docker Compose
+        run: |
+          sudo rm /usr/local/bin/docker-compose
+          curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` > docker-compose
+          chmod +x docker-compose
+          sudo mv docker-compose /usr/local/bin
 
-    - name: Run Docker Compose
-      run: docker-compose up -d
+      - name: Run Docker Compose
+        run: docker-compose up -d
+        env:
+          MY_G_TOKEN: ${{ secrets.MY_G_TOKEN }}
+          FOOTBALL_API_TOKEN: ${{ secrets.FOOTBALL_API_TOKEN }}
 
-      env:
-        MY_G_TOKEN: ${{ secrets.MY_G_TOKEN }}
-        FOOTBALL_API_TOKEN: ${{ secrets.FOOTBALL_API_TOKEN }}
+      - name: Copy Allure Report
+        run: docker cp tests-service:/usr/app/target/allure-results allure-results
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.5
+        with:
+          branch: gh-pages
+          folder: allure-results
