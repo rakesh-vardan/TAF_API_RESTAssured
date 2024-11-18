@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
+import static io.restassured.RestAssured.basic;
 import static io.restassured.RestAssured.oauth2;
 
 @SpringBootConfiguration

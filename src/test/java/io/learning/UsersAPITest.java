@@ -18,8 +18,10 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
@@ -94,5 +96,36 @@ public class UsersAPITest extends BaseTest {
             log.error("Error while reading file", e);
         }
         return expectedUserResponse;
+    }
+
+
+    @Test
+    public void testMe() {
+        given()
+                .contentType("application/json")
+                .body("")
+                .auth()
+                .preemptive()
+                .basic("admin", "admin")
+                .log().all()
+        .when()
+                .get("/users/me")
+        .then().statusCode(200)
+                .body("name", equalTo("admin"));
+    }
+
+    @Test
+    public void testAPI() {
+        //https://jsonplaceholder.typicode.com/users/1
+
+        given()
+                .baseUri("https://jsonplaceholder.typicode.com")
+                .log().all()
+        .when()
+                .get("/users/1")
+        .then()
+                .log().all()
+                .statusCode(200) // assertion for status code
+                .body("name", equalTo("Leanne Graham")); // assertion for body
     }
 }
