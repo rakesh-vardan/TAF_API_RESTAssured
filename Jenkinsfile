@@ -12,6 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                bat 'figlet "CHECKOUT"'
                 // Checkout the Git repository to the workspace
                 git url: 'https://github.com/rakesh-vardan/TAF_API_RESTAssured.git', branch: 'main'
             }
@@ -20,6 +21,7 @@ pipeline {
         stage('Verify Directory Structure') {
             steps {
                 // Debugging: List files in the workspace to check if pom.xml exists
+                bat 'figlet "LIST FILES"'
                 script {
                     echo "Listing files in the project directory: ${PROJECT_DIR}"
                     bat "dir ${PROJECT_DIR}" // Windows command to list directory contents
@@ -30,6 +32,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Run mvn clean install from the root directory of the project
+                bat 'figlet "INSTALL DEPENDENCIES"'
+
                 dir("${PROJECT_DIR}") {
                     script {
                         echo "Running mvn clean install"
@@ -42,6 +46,8 @@ pipeline {
         stage('Run API Tests') {
             steps {
                 // Run the REST Assured API tests
+                bat 'figlet "RUN API TESTS"'
+
                 dir("${PROJECT_DIR}") {
                     script {
                         echo "Running mvn test"
